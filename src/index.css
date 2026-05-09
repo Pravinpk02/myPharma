@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Target Google's button container */
+div[role="button"].nsm7Bb-HzV7m-LgbsSe {
+    width: 432px !important;
+    max-width: 432px !important;
+    border-radius: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: background-color 0.15s !important;
+}
+
+div[role="button"].nsm7Bb-HzV7m-LgbsSe:hover {
+    background-color: #f9fafb !important;
+}
+
+/* Make the wrapper div full width */
+div.S9gUrf-YoZ4jf {
+    width: 100% !important;
+}
+
+.nsm7Bb-HzV7m-LgbsSe-BPrWId {
+    font-weight: 700 !important;
+}
+
+.padngtop-6 {
+    padding-top: 0.7rem !important;
+}
