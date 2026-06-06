@@ -1,0 +1,141 @@
+.selectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.selectTrigger {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.15));
+  font-size: 13px;
+  font-family: inherit;
+  background-color: var(--surface, #FFFFFF);
+  color: var(--text, #0A2318);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.selectTrigger:hover {
+  border-color: var(--g4, rgba(29, 158, 117, 0.5));
+}
+
+.selectTriggerFocus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+
+.triggerText {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.placeholderText {
+  color: var(--muted, #8AA89E);
+}
+
+.chevron {
+  margin-left: 8px;
+  color: var(--muted, #8AA89E);
+  transition: transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: var(--surface, #FFFFFF);
+  border: 1px solid var(--border, #E8F0EC);
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.04);
+  z-index: 1000;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px 0;
+  list-style: none;
+  margin: 0;
+  animation: slideDown 0.15s ease-out;
+}
+
+/* Custom scrollbar for dropdownMenu */
+.dropdownMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdownMenu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb {
+  background-color: var(--border, #E8F0EC);
+  border-radius: 10px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted, #8AA89E);
+}
+
+.option {
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: var(--text, #0A2318);
+  transition: background 0.1s ease;
+}
+
+.option:hover {
+  background-color: rgba(var(--accent-rgb), 0.05);
+}
+
+.optionActive {
+  background-color: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.optionFocused {
+  background-color: rgba(var(--accent-rgb), 0.04);
+}
+
+.optionLabel {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.optionSubLabel {
+  font-size: 11px;
+  color: var(--muted, #8AA89E);
+  margin-top: 2px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

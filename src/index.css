@@ -29,3 +29,269 @@ div.S9gUrf-YoZ4jf {
 .padngtop-6 {
     padding-top: 0.7rem !important;
 }
+/* Reset focus outline to prevent visual issues */
+.recharts-sector:focus,.recharts-surface:focus {
+    outline: none;
+}
+
+/* ─── Global Appearance Token System ─────────────────────────────────────────
+   Driven by data-theme, data-accent, data-sidebar attributes on <html>
+   Applied by AppearanceContext.tsx
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Light theme (default) */
+:root {
+  --bg: #F0FDF4;
+  --panel-bg: #FFFFFF;
+  --border: #D1FAE5;
+  --text: #064E3B;
+  --muted: #64748B;
+  --sidebar-bg: #e1f5ee;
+  --sidebar-item-active-bg: #bae8d8;
+  --sidebar-text: #000000;
+  --sidebar-muted: rgba(0,0,0,0.65);
+  --content-bg: #e9f1ee;
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --input-text: #0F172A;
+  --row-border: #F1F5F9;
+  --accent: #10B981;
+  --btn-hover: #059669;
+  --accent-rgb: 16,185,129;
+  --accent-dark: #0F6E56;
+  --accent-shadow-rgba: 15, 110, 86;
+  --accent-hover-border: #9FE1CB;
+  --sidebar-width: 255px;
+
+  /* Surface & Glass Fallbacks */
+  --surface: #FFFFFF;
+  --white: #FFFFFF;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 4px 24px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.1), 0 1px 4px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.06);
+
+  /* Status Colors */
+  --amber: #EF9F27;
+  --amber-pale: #FAEEDA;
+  --red: #E24B4A;
+  --red-pale: #FCEBEB;
+  --blue: #378ADD;
+  --blue-pale: #E6F1FB;
+  --pink: #D4537E;
+  --pink-pale: #FBEAF0;
+
+  /* Default dynamic mappings pointing to accent variables */
+  --g1: var(--accent-g1, #0F6E56);
+  --g2: var(--accent-g2, #1D9E75);
+  --g3: var(--accent-g3, #5DCAA5);
+  --g4: var(--accent-g4, #9FE1CB);
+  --g5: var(--accent-g5, #E1F5EE);
+
+  /* Scrollbar defaults */
+  --scroll-track: rgba(var(--accent-rgb), 0.04);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(255, 255, 255, 0.12);
+
+  /* Status Badge Tokens (Light/Default Mode) */
+  --status-ok-bg: #E1F5EE;
+  --status-ok-text: #0F6E56;
+  --status-warn-bg: #FAEEDA;
+  --status-warn-text: #854F0B;
+  --status-low-bg: #FCEBEB;
+  --status-low-text: #A32D2D;
+  --status-oos-bg: #F0E6FB;
+  --status-oos-text: #6B21A8;
+  --status-proc-bg: #E6F1FB;
+  --status-proc-text: #185FA5;
+}
+
+/* Dark theme — html prefix raises specificity to beat :root */
+html[data-theme="dark"] {
+  --bg: #0F172A;
+  --panel-bg: #1E293B;
+  --border: #334155;
+  --text: #E2E8F0;
+  --muted: #94A3B8;
+  --sidebar-bg: #1E293B;
+  --sidebar-item-active-bg: rgba(var(--accent-rgb), 0.15);
+  --sidebar-text: #E2E8F0;
+  --sidebar-muted: rgba(226,232,240,0.65);
+  --content-bg: #0F172A;
+  --card-bg: #1E293B;
+  --input-bg: #0F172A;
+  --input-border: #334155;
+  --input-text: #E2E8F0;
+  --row-border: #334155;
+
+  /* Dashboard, Inventory, and Orders dark-theme mappings */
+  --surface: #1E293B;
+  --white: #1E293B;
+  --glass: rgba(30, 41, 59, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.2);
+
+  --g5: rgba(var(--accent-rgb), 0.12);
+  --g4: rgba(var(--accent-rgb), 0.25);
+  --g3: rgba(var(--accent-rgb), 0.40);
+  --g2: var(--accent);
+  --g1: var(--accent-dark);
+
+  --amber: #F59E0B;
+  --amber-pale: rgba(245, 158, 11, 0.12);
+  --red: #EF4444;
+  --red-pale: rgba(239, 68, 68, 0.12);
+  --blue: #3B82F6;
+  --blue-pale: rgba(59, 130, 246, 0.12);
+  --pink: #EC4899;
+  --pink-pale: rgba(236, 72, 153, 0.12);
+
+  --scroll-track: rgba(255, 255, 255, 0.05);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(30, 41, 59, 0.3);
+
+  /* Status Badge Tokens (Bright/Neon Colors in Dark Mode) */
+  --status-ok-bg: rgba(16, 185, 129, 0.16);
+  --status-ok-text: #34D399;
+  --status-warn-bg: rgba(245, 158, 11, 0.16);
+  --status-warn-text: #FBBF24;
+  --status-low-bg: rgba(239, 68, 68, 0.16);
+  --status-low-text: #F87171;
+  --status-oos-bg: rgba(168, 85, 247, 0.16);
+  --status-oos-text: #C084FC;
+  --status-proc-bg: rgba(59, 130, 246, 0.16);
+  --status-proc-text: #60A5FA;
+}
+
+/* Light theme explicit (for when [data-theme="light"] is set) */
+html[data-theme="light"] {
+  --bg: #F0FDF4;
+  --panel-bg: #FFFFFF;
+  --border: #D1FAE5;
+  --text: #064E3B;
+  --muted: #64748B;
+  --sidebar-bg: #e1f5ee;
+  --sidebar-item-active-bg: #bae8d8;
+  --sidebar-text: #000000;
+  --sidebar-muted: rgba(0,0,0,0.65);
+  --content-bg: #e9f1ee;
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --input-text: #0F172A;
+  --row-border: #F1F5F9;
+
+  /* Dashboard, Inventory, and Orders light-theme mappings */
+  --surface: #FFFFFF;
+  --white: #FFFFFF;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 4px 24px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.1), 0 1px 4px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.06);
+
+  --g5: var(--accent-g5, #E1F5EE);
+  --g4: var(--accent-g4, #9FE1CB);
+  --g3: var(--accent-g3, #5DCAA5);
+  --g2: var(--accent-g2, #1D9E75);
+  --g1: var(--accent-g1, #0F6E56);
+
+  --amber: #EF9F27;
+  --amber-pale: #FAEEDA;
+  --red: #E24B4A;
+  --red-pale: #FCEBEB;
+  --blue: #378ADD;
+  --blue-pale: #E6F1FB;
+  --pink: #D4537E;
+  --pink-pale: #FBEAF0;
+
+  --scroll-track: rgba(var(--accent-rgb), 0.04);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(255, 255, 255, 0.12);
+
+  /* Status Badge Tokens (Explicit Light Theme mapping) */
+  --status-ok-bg: #E1F5EE;
+  --status-ok-text: #0F6E56;
+  --status-warn-bg: #FAEEDA;
+  --status-warn-text: #854F0B;
+  --status-low-bg: #FCEBEB;
+  --status-low-text: #A32D2D;
+  --status-oos-bg: #F0E6FB;
+  --status-oos-text: #6B21A8;
+  --status-proc-bg: #E6F1FB;
+  --status-proc-text: #185FA5;
+}
+
+/* Accent colour tokens */
+html[data-accent="green"]  { 
+  --accent: #10B981; 
+  --btn-hover: #059669; 
+  --accent-rgb: 16,185,129; 
+  --accent-dark: #0F6E56; 
+  --accent-shadow-rgba: 15, 110, 86; 
+  --accent-hover-border: #9FE1CB;
+  --accent-g5: #E1F5EE;
+  --accent-g4: #9FE1CB;
+  --accent-g3: #5DCAA5;
+  --accent-g2: #1D9E75;
+  --accent-g1: #0F6E56;
+}
+html[data-accent="blue"]   { 
+  --accent: #3B82F6; 
+  --btn-hover: #1D4ED8; 
+  --accent-rgb: 59,130,246; 
+  --accent-dark: #1E40AF; 
+  --accent-shadow-rgba: 30, 64, 175; 
+  --accent-hover-border: #93C5FD;
+  --accent-g5: #EFF6FF;
+  --accent-g4: #93C5FD;
+  --accent-g3: #60A5FA;
+  --accent-g2: #3B82F6;
+  --accent-g1: #1E40AF;
+}
+html[data-accent="purple"] { 
+  --accent: #8B5CF6; 
+  --btn-hover: #6D28D9; 
+  --accent-rgb: 139,92,246; 
+  --accent-dark: #5B21B6; 
+  --accent-shadow-rgba: 109, 40, 217; 
+  --accent-hover-border: #C7D2FE;
+  --accent-g5: #F5F3FF;
+  --accent-g4: #C7D2FE;
+  --accent-g3: #A78BFA;
+  --accent-g2: #8B5CF6;
+  --accent-g1: #5B21B6;
+}
+html[data-accent="red"]    { 
+  --accent: #EF4444; 
+  --btn-hover: #B91C1C; 
+  --accent-rgb: 239,68,68;  
+  --accent-dark: #991B1B; 
+  --accent-shadow-rgba: 185, 28, 28; 
+  --accent-hover-border: #FCA5A5;
+  --accent-g5: #FEF2F2;
+  --accent-g4: #FCA5A5;
+  --accent-g3: #F87171;
+  --accent-g2: #EF4444;
+  --accent-g1: #991B1B;
+}
+html[data-accent="orange"] { 
+  --accent: #F97316; 
+  --btn-hover: #C2410C; 
+  --accent-rgb: 249,115,22; 
+  --accent-dark: #9A3412; 
+  --accent-shadow-rgba: 194, 65, 12; 
+  --accent-hover-border: #FDBA74;
+  --accent-g5: #FFF7ED;
+  --accent-g4: #FDBA74;
+  --accent-g3: #FB923C;
+  --accent-g2: #F97316;
+  --accent-g1: #9A3412;
+}
+
+/* Sidebar layout width tokens */
+html[data-sidebar="default"] { --sidebar-width: 255px; }
+html[data-sidebar="compact"]  { --sidebar-width: 180px; }
+html[data-sidebar="minimal"]  { --sidebar-width: 68px;  }
+

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { registerApi } from "../api/authApi";
+import { registerApi } from "../../api/authApi";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const EyeIcon = ({ open }: { open: boolean }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,15 +25,6 @@ const CheckIcon = () => (
   </svg>
 );
 
-// const GoogleIcon = () => (
-//   <svg width="18" height="18" viewBox="0 0 48 48">
-//     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-//     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-//     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-//     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-//   </svg>
-// );
-
 function getStrength(pw: string) {
   let score = 0;
   if (pw.length >= 8) score++;
@@ -39,7 +32,7 @@ function getStrength(pw: string) {
   if (/[0-9]/.test(pw)) score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
   const labels = ["", "Weak", "Fair", "Good", "Strong"];
-  const colors = ["#eee", "#e53935", "#fb8c00", "#fdd835", "#1db954"];
+  const colors = ["#eee", "#ef4444", "#f59e0b", "#eab308", "#10b981"];
   return { score, label: labels[score], color: colors[score], width: score * 25 };
 }
 
@@ -70,7 +63,7 @@ function InputField({ label, id, type = "text", placeholder, value, onChange, hi
         onChange={onChange}
         style={{
           padding: "9px 12px",
-          border: `1px solid ${hintType === "bad" ? "#e53935" : "#ddd"}`,
+          border: `1px solid ${hintType === "bad" ? "#ef4444" : "#ddd"}`,
           borderRadius: 8,
           fontSize: 13,
           color: "#222",
@@ -79,12 +72,13 @@ function InputField({ label, id, type = "text", placeholder, value, onChange, hi
           background: "#fff",
           transition: "border 0.15s",
           width: "100%",
+          boxSizing: "border-box",
         }}
-        onFocus={e => { if (hintType !== "bad") e.target.style.borderColor = "#1db954"; }}
+        onFocus={e => { if (hintType !== "bad") e.target.style.borderColor = "var(--accent)"; }}
         onBlur={e => { if (hintType !== "bad") e.target.style.borderColor = "#ddd"; }}
       />
       {hint && (
-        <span style={{ fontSize: 11, marginTop: 3, color: hintType === "bad" ? "#e53935" : hintType === "good" ? "#1db954" : "#aaa" }}>
+        <span style={{ fontSize: 11, marginTop: 3, color: hintType === "bad" ? "#ef4444" : hintType === "good" ? "#10b981" : "#aaa" }}>
           {hint}
         </span>
       )}
@@ -121,7 +115,7 @@ function PasswordField({ label, id, placeholder, value, onChange, hint, hintType
           onChange={onChange}
           style={{
             padding: "9px 36px 9px 12px",
-            border: `1px solid ${hintType === "bad" ? "#e53935" : "#ddd"}`,
+            border: `1px solid ${hintType === "bad" ? "#ef4444" : "#ddd"}`,
             borderRadius: 8,
             fontSize: 13,
             color: "#222",
@@ -129,9 +123,10 @@ function PasswordField({ label, id, placeholder, value, onChange, hint, hintType
             fontFamily: "inherit",
             background: "#fff",
             width: "100%",
+            boxSizing: "border-box",
             transition: "border 0.15s",
           }}
-          onFocus={e => { if (hintType !== "bad") e.target.style.borderColor = "#1db954"; }}
+          onFocus={e => { if (hintType !== "bad") e.target.style.borderColor = "var(--accent)"; }}
           onBlur={e => { if (hintType !== "bad") e.target.style.borderColor = "#ddd"; }}
         />
         <button
@@ -139,7 +134,7 @@ function PasswordField({ label, id, placeholder, value, onChange, hint, hintType
           onClick={() => setShow(s => !s)}
           style={{
             position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
-            background: "none", border: "none", cursor: "pointer", color: show ? "#1db954" : "#999",
+            background: "none", border: "none", cursor: "pointer", color: show ? "var(--accent)" : "#999",
             display: "flex", alignItems: "center", padding: 0,
           }}
         >
@@ -152,7 +147,7 @@ function PasswordField({ label, id, placeholder, value, onChange, hint, hintType
         </div>
       )}
       {hint && (
-        <span style={{ fontSize: 11, marginTop: 3, color: hintType === "bad" ? "#e53935" : hintType === "good" ? "#1db954" : "#888" }}>
+        <span style={{ fontSize: 11, marginTop: 3, color: hintType === "bad" ? "#ef4444" : hintType === "good" ? "#10b981" : "#888" }}>
           {hint}
         </span>
       )}
@@ -160,12 +155,20 @@ function PasswordField({ label, id, placeholder, value, onChange, hint, hintType
   );
 }
 
-export default function CreateAccount() {
+export default function SignupPage() {
+  const navigate = useNavigate();
+  const { token, loading: authLoading } = useAuth();
   const [form, setForm] = useState<{ firstName: string; lastName: string; email: string; phoneNumber: string; password: string; confirm: string }>({ firstName: "", lastName: "", email: "", phoneNumber: "", password: "", confirm: "" });
   const [terms, setTerms] = useState(false);
   const [status, setStatus] = useState<{ msg: string; type: "success" | "error" | "" }>({ msg: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && token) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [token, authLoading, navigate]);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -185,10 +188,11 @@ export default function CreateAccount() {
     setStatus({ msg: "", type: "" });
     setLoading(true);
     
-     try {
+    try {
       const response = await registerApi({ firstName, lastName, email, password, phoneNumber });
-      console.log('Token:', response.token);
-      // save token, redirect, etc.
+      console.log('Registration Token:', response.token);
+      setStatus({ msg: "Account created successfully! Redirecting to login...", type: "success" });
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err: any) {
       setStatus({ msg: err.response?.data?.message || 'Registration failed', type: "error" });
     } finally {
@@ -197,58 +201,44 @@ export default function CreateAccount() {
   };
 
   const features = [
-    "Live crypto performance dashboard",
-    "Daily profit & loss reports",
-    "Smart alerts & price notifications",
-    "Works on all your devices",
-    "Free to get started",
+    "Real-time inventory stock management",
+    "Detailed orders tracking & timelines",
+    "Comprehensive sales & operations telemetry",
+    "Dynamic system theme and accent colors",
+    "Authorized secure admin role permissions",
   ];
 
   return (
     <div style={{
-      minHeight: "100vh", background: "#e8f5e9", display: "flex",
+      minHeight: "100vh", background: "linear-gradient(135deg, #ecfdf5 0%, #f8fafc 50%, #f0fdf4 100%)", display: "flex",
       alignItems: "flex-start", justifyContent: "center", padding: "28px 16px",
       fontFamily: "'Segoe UI', system-ui, sans-serif",
+      boxSizing: "border-box",
     }}>
       <div style={{
         display: "flex", width: "100%", maxWidth: 860, background: "#fff",
-        borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)",
+        borderRadius: 16, overflow: "hidden", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05)",
         opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
         transition: "opacity 0.4s ease, transform 0.4s ease",
+        border: "1px solid #f1f5f9",
       }}>
 
         {/* ── LEFT PANEL ── */}
-        <div style={{ flex: 1, padding: "36px 40px 32px", display: "flex", flexDirection: "column" }}>
+        <div style={{ flex: 1, padding: "36px 40px 32px", display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
           {/* Logo */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
-            <div style={{ width: 32, height: 32, background: "#1db954", borderRadius: "50%" }} />
-            <span style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>Bischen</span>
+            <div style={{ width: 32, height: 32, background: "linear-gradient(135deg, var(--accent), var(--btn-hover))", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "bold", fontSize: 13 }}>M</div>
+            <span style={{ fontSize: 18, fontWeight: 700, color: "#0f172a" }}>MyPharma</span>
           </div>
 
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: "#111", margin: "0 0 3px" }}>Create Account</h2>
-          <p style={{ fontSize: 13, color: "#888", margin: "0 0 20px" }}>Start tracking cryptos and grow your portfolio today!</p>
-
-          {/* Google Sign-Up */}
-          {/* <button
-            onClick={handleGoogleSignUp}
-            style={{
-              width: "100%", display: "flex", alignItems: "center", justifyContent: "center",
-              gap: 10, padding: "11px 16px", border: "1px solid #dadce0", borderRadius: 8,
-              background: "#fff", fontSize: 14, fontWeight: 500, color: "#3c4043",
-              cursor: "pointer", marginBottom: 18, fontFamily: "inherit", transition: "background 0.15s",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "#f5f5f5"}
-            onMouseLeave={e => e.currentTarget.style.background = "#fff"}
-          >
-            <GoogleIcon />
-            Sign up with Google
-          </button> */}
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: "#0f172a", margin: "0 0 3px" }}>Create Account</h2>
+          <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Register to coordinate operations and manage resources.</p>
 
           {/* Divider */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <hr style={{ flex: 1, border: "none", borderTop: "1px solid #e8e8e8" }} />
-            <span style={{ fontSize: 12, color: "#aaa", whiteSpace: "nowrap" }}>or create with email</span>
-            <hr style={{ flex: 1, border: "none", borderTop: "1px solid #e8e8e8" }} />
+            <hr style={{ flex: 1, border: "none", borderTop: "1px solid #f1f5f9" }} />
+            <span style={{ fontSize: 12, color: "#94a3b8", whiteSpace: "nowrap" }}>create with credentials</span>
+            <hr style={{ flex: 1, border: "none", borderTop: "1px solid #f1f5f9" }} />
           </div>
 
           {/* Name Row */}
@@ -282,13 +272,13 @@ export default function CreateAccount() {
           </div>
 
           {/* Terms */}
-          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, margin: "10px 0 16px", fontSize: 12, color: "#666", cursor: "pointer" }}>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, margin: "10px 0 16px", fontSize: 12, color: "#64748b", cursor: "pointer" }}>
             <input type="checkbox" checked={terms} onChange={e => setTerms(e.target.checked)}
-              style={{ marginTop: 2, accentColor: "#1db954", flexShrink: 0 }} />
+              style={{ marginTop: 2, accentColor: "var(--accent)", flexShrink: 0 }} />
             I agree to the{" "}
-            <a href="#" style={{ color: "#1db954", textDecoration: "none", marginLeft: 3 }}>Terms of Service</a>
+            <a href="#" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>Terms of Service</a>
             {" "}and{" "}
-            <a href="#" style={{ color: "#1db954", textDecoration: "none" }}>Privacy Policy</a>
+            <a href="#" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</a>
           </label>
 
           {/* Submit */}
@@ -296,46 +286,53 @@ export default function CreateAccount() {
             onClick={handleSubmit}
             disabled={loading}
             style={{
-              width: "100%", padding: 12, background: loading ? "#a5d6b4" : "#1db954",
+              width: "100%", padding: 12, background: loading ? "var(--g4)" : "var(--accent)",
               color: "#fff", border: "none", borderRadius: 8, fontSize: 15,
               fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
               fontFamily: "inherit", transition: "background 0.15s", letterSpacing: "0.2px",
             }}
-            onMouseEnter={e => { if (!loading) e.currentTarget.style.background = "#17a347"; }}
-            onMouseLeave={e => { if (!loading) e.currentTarget.style.background = "#1db954"; }}
+            onMouseEnter={e => { if (!loading) e.currentTarget.style.background = "var(--btn-hover)"; }}
+            onMouseLeave={e => { if (!loading) e.currentTarget.style.background = "var(--accent)"; }}
           >
             {loading ? "Creating account…" : "Create Account"}
           </button>
 
           {/* Status */}
           {status.msg && (
-            <p style={{ marginTop: 10, fontSize: 13, textAlign: "center", color: status.type === "success" ? "#1db954" : "#e53935" }}>
+            <p style={{ marginTop: 10, fontSize: 13, textAlign: "center", color: status.type === "success" ? "#10b981" : "#ef4444" }}>
               {status.msg}
             </p>
           )}
 
-          <p style={{ textAlign: "center", marginTop: 14, fontSize: 13, color: "#888" }}>
+          <p style={{ textAlign: "center", marginTop: 14, fontSize: 13, color: "#64748b" }}>
             Already have an account?{" "}
-            <a href="#" style={{ color: "#1db954", textDecoration: "none", fontWeight: 600 }}>Sign In</a>
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
+              style={{ color: "var(--accent)", background: "none", border: "none", padding: 0, textDecoration: "none", fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+            >
+              Sign In
+            </button>
           </p>
 
-          <p style={{ marginTop: "auto", paddingTop: 16, fontSize: 11, color: "#ccc" }}>
-            © 2022 Bischen All rights reserved.
+          <p style={{ marginTop: "auto", paddingTop: 16, fontSize: 11, color: "#cbd5e1" }}>
+            © {new Date().getFullYear()} MyPharma. All rights reserved.
           </p>
         </div>
 
         {/* ── RIGHT PANEL ── */}
         <div style={{
-          flex: 1, background: "#1db954", display: "flex", flexDirection: "column",
+          flex: 1, background: "linear-gradient(135deg, var(--accent), var(--accent-dark))", display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center", padding: 40, color: "#fff", textAlign: "center",
+          boxSizing: "border-box",
         }}>
           <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 12, lineHeight: 1.3 }}>
-            Join thousands of crypto traders
+            Join MyPharma Operations
           </h1>
           <p style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.7, marginBottom: 28 }}>
-            Get personalized insights, real-time tracking, and powerful tools to grow your portfolio.
+            Get access to centralized pharmaceutical operations tracking, stock adjustments telemetry, and shipping logistics.
           </p>
-          <ul style={{ listStyle: "none", width: "100%", textAlign: "left", padding: 0 }}>
+          <ul style={{ listStyle: "none", width: "100%", textAlign: "left", padding: 0, margin: 0 }}>
             {features.map((f, i) => (
               <li key={i} style={{
                 display: "flex", alignItems: "center", gap: 10, fontSize: 13,
