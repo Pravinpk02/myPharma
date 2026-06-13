@@ -206,7 +206,7 @@ const DoughnutChart = React.memo(({ data }: { data: CategoryData[] }) => (
       <Pie data={data} cx="50%" cy="50%" innerRadius={42} outerRadius={70} dataKey="percentage" nameKey="name">
         {data.map((_, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
       </Pie>
-      <Tooltip formatter={(value: number) => `${value}%`} />
+      <Tooltip formatter={(value: any) => value != null ? `${value}%` : ''} />
     </PieChart>
   </ResponsiveContainer>
 ));
