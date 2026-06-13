@@ -1,0 +1,114 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg);
+    opacity: 1;
+    z-index: 999999;
+    backdrop-filter: blur(10px);
+    transition: opacity 0.25s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px;
+    border-radius: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    min-width: 280px;
+    text-align: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.brandIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--white, #FFFFFF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.25);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.brandText {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+}
+
+.loaderLine {
+    width: 100%;
+    height: 4px;
+    background: var(--g5);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.loaderFill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    animation: slide 1.2s infinite ease-in-out;
+}
+
+.statusText {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+@keyframes slide {
+    0% {
+        left: -40%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.95;
+    }
+}

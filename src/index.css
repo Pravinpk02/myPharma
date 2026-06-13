@@ -29,3 +29,20 @@ div.S9gUrf-YoZ4jf {
 .padngtop-6 {
     padding-top: 0.7rem !important;
 }
+/* Reset focus outline to prevent visual issues */
+.recharts-sector:focus,.recharts-surface:focus {
+    outline: none;
+}
+
+/* ─── Global Appearance Token System ─────────────────────────────────────────
+   Driven by data-theme, data-accent, data-sidebar attributes on <html>
+   Applied by AppearanceContext.tsx
+   Modularized into separate theme files.
+───────────────────────────────────────────────────────────────────────────── */
+
+@import "./themes/light.css";
+@import "./themes/dark.css";
+@import "./themes/accents.css";
+@import "./themes/sidebar.css";
+
+

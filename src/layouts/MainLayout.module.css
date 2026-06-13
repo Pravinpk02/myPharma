@@ -1,0 +1,565 @@
+.layout {
+  position: relative;
+  min-height: 100vh;
+  background: var(--content-bg, #e9f1ee);
+  transition: background 0.3s ease;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width, 255px);
+  box-sizing: border-box;
+  background: var(--sidebar-bg, #e1f5ee);
+  display: flex;
+  flex-direction: column;
+  color: var(--sidebar-text, #000);
+  z-index: 10;
+  transition: width 0.25s ease, background 0.3s ease;
+  overflow: hidden;
+}
+
+.brandCard {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.brandIcon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-dark, #0F6E56);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.brandName {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--sidebar-text, #000);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.brandRole {
+  font-size: 0.58rem;
+  letter-spacing: 0.18rem;
+  color: var(--sidebar-muted, rgba(0,0,0,0.5));
+  white-space: nowrap;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+/* Hide brand text in minimal mode */
+.sidebarMinimal .brandName,
+.sidebarMinimal .brandRole {
+  display: none;
+}
+
+.sidebarMinimal .brandCard {
+  padding: 14px 4px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  transition: padding 0.25s ease;
+}
+
+.sidebarMinimal .navGroup {
+  padding: 12px 8px;
+  align-items: center;
+}
+
+.navGroup::-webkit-scrollbar {
+  width: 6px;
+}
+
+.navGroup::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navGroup::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+.sectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--sidebar-muted, rgba(0,0,0,0.5));
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.2s ease, color 0.3s ease;
+}
+
+/* Hide section titles in minimal mode */
+.sidebarMinimal .sectionTitle {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sidebarMinimal .section {
+  margin-bottom: 16px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebarMinimal .nav {
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  color: var(--sidebar-text, #000);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease, transform 0.15s ease, color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarMinimal .navLink {
+  justify-content: center;
+  padding: 8px;
+  width: 46px;
+  border-radius: 12px;
+}
+
+.navLink:hover {
+  background: rgba(var(--accent-rgb, 16,185,129), 0.12);
+  transform: translateX(1px);
+}
+
+.sidebarMinimal .navLink:hover {
+  transform: none;
+}
+
+/* Link text — hide in minimal mode */
+.linkText {
+  flex: 1;
+  text-align: left;
+  color: var(--sidebar-text, #000);
+  transition: color 0.3s ease;
+}
+
+.sidebarMinimal .linkText {
+  display: none;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.badge {
+  min-width: 24px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb, 16,185,129), 0.25);
+  color: var(--sidebar-text, #000);
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-left: auto;
+  transition: opacity 0.2s ease;
+}
+
+.sidebarMinimal .badge {
+  display: none;
+}
+
+.activeLink {
+  background: var(--sidebar-item-active-bg, #bae8d8);
+  box-shadow: inset 4px 0 0 var(--accent, #10B981);
+}
+
+.sidebarMinimal .activeLink {
+  box-shadow: none;
+  background: rgba(var(--accent-rgb, 16,185,129), 0.2);
+}
+
+.profileCard {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(var(--accent-rgb, 16,185,129), 0.12);
+  position: sticky;
+  bottom: 10px;
+  z-index: 5;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.sidebarMinimal .profileCard {
+  justify-content: center;
+  padding: 10px 4px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  background: var(--accent-dark, #0F6E56);
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.profileName {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--sidebar-text, #000);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.profileRole {
+  font-size: 0.62rem;
+  color: var(--sidebar-muted, rgba(0,0,0,0.6));
+  white-space: nowrap;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+/* Hide profile text in minimal mode */
+.sidebarMinimal .profileName,
+.sidebarMinimal .profileRole {
+  display: none;
+}
+
+/* ─── Compact Mode — labels only, no icons ────────────────────────── */
+
+/* Brand area: keep icon hidden, show brand name/role as normal */
+.sidebarCompact .brandCard {
+  padding: 14px 16px;
+  gap: 10px;
+}
+
+.sidebarCompact .navGroup {
+  padding: 16px 14px;
+}
+
+/* Nav links: remove icon gap, show only the label text */
+.sidebarCompact .navLink {
+  gap: 0;
+  padding: 9px 14px;
+  justify-content: flex-start;
+}
+
+/* Compact active link: slim left-border accent, no icon offset */
+.sidebarCompact .activeLink {
+  box-shadow: inset 3px 0 0 var(--accent, #10B981);
+}
+
+/* Section titles stay visible in compact mode */
+.sidebarCompact .sectionTitle {
+  margin-bottom: 10px;
+}
+
+/* Labels fill full width in compact mode */
+.sidebarCompact .linkText {
+  flex: 1;
+  font-size: 13px;
+}
+
+/* Badges stay visible */
+.sidebarCompact .badge {
+  margin-left: auto;
+}
+
+.content {
+  margin-left: var(--sidebar-width, 255px);
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: var(--content-bg, #e9f1ee);
+  transition: margin-left 0.25s ease, background 0.3s ease;
+}
+
+/* ─── Logout Nav Button ─────────────────────────────────────────────── */
+
+.logoutNavBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+/* ─── Logout Modal Overlay ──────────────────────────────────────────── */
+
+.logoutOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: logoutFadeIn 0.2s ease;
+}
+
+@keyframes logoutFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Logout Modal Card ─────────────────────────────────────────────── */
+
+.logoutModal {
+  position: relative;
+  background: var(--panel-bg, #ffffff);
+  border: 1px solid var(--border, #D1FAE5);
+  border-radius: 24px;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.22),
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  padding: 40px 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: logoutSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes logoutSlideUp {
+  from { transform: translateY(24px) scale(0.97); opacity: 0; }
+  to   { transform: translateY(0) scale(1);        opacity: 1; }
+}
+
+/* Close ×  */
+.logoutClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--content-bg, #f3f4f6);
+  color: var(--muted, #64748B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.logoutClose:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #F87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Icon wrapper */
+.logoutIconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.08));
+  border: 2px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F87171;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.logoutIconSpinning {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.08));
+  border-color: rgba(16, 185, 129, 0.25);
+  color: var(--accent, #10B981);
+}
+
+/* Spinner animation */
+.logoutSpinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(16, 185, 129, 0.2);
+  border-top-color: var(--accent, #10B981);
+  border-radius: 50%;
+  animation: logoutSpin 0.75s linear infinite;
+}
+
+@keyframes logoutSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Title */
+.logoutTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text, #064E3B);
+  margin: 0 0 10px;
+  letter-spacing: -0.4px;
+}
+
+/* Body text */
+.logoutBody {
+  font-size: 14px;
+  color: var(--muted, #64748B);
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+
+.logoutBody strong {
+  color: var(--text, #064E3B);
+  font-weight: 700;
+}
+
+/* Session info box */
+.logoutInfo {
+  width: 100%;
+  background: var(--content-bg, #f0fdf4);
+  border: 1px solid var(--border, #D1FAE5);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logoutInfoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logoutInfoLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted, #64748B);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.logoutInfoValue {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text, #064E3B);
+}
+
+/* Action buttons row */
+.logoutActions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.logoutCancelBtn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border, #D1FAE5);
+  background: var(--content-bg, #f0fdf4);
+  color: var(--text, #064E3B);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.logoutCancelBtn:hover {
+  background: var(--panel-bg, #fff);
+  border-color: var(--accent, #10B981);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.logoutConfirmBtn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.logoutConfirmBtn:hover {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+  transform: translateY(-1px);
+}
+
+.logoutConfirmBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+

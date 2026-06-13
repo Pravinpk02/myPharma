@@ -1,0 +1,125 @@
+/* Light theme (default) */
+:root {
+  --bg: var(--theme-bg, #F0FDF4);
+  --panel-bg: #FFFFFF;
+  --border: var(--theme-border, #D1FAE5);
+  --text: var(--theme-text, #064E3B);
+  --muted: #64748B;
+  --sidebar-bg: var(--theme-sidebar-bg, #e1f5ee);
+  --sidebar-item-active-bg: var(--theme-sidebar-item-active-bg, #bae8d8);
+  --sidebar-text: #000000;
+  --sidebar-muted: rgba(0,0,0,0.65);
+  --content-bg: var(--theme-content-bg, #e9f1ee);
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --input-text: #0F172A;
+  --row-border: #F1F5F9;
+  --accent: #10B981;
+  --btn-hover: #059669;
+  --accent-rgb: 16,185,129;
+  --accent-dark: #0F6E56;
+  --accent-shadow-rgba: 15, 110, 86;
+  --accent-hover-border: #9FE1CB;
+  --sidebar-width: 255px;
+
+  /* Surface & Glass Fallbacks */
+  --surface: #FFFFFF;
+  --white: #FFFFFF;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 4px 24px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.1), 0 1px 4px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.06);
+
+  /* Status Colors */
+  --amber: #EF9F27;
+  --amber-pale: #FAEEDA;
+  --red: #E24B4A;
+  --red-pale: #FCEBEB;
+  --blue: #378ADD;
+  --blue-pale: #E6F1FB;
+  --pink: #D4537E;
+  --pink-pale: #FBEAF0;
+
+  /* Default dynamic mappings pointing to accent variables */
+  --g1: var(--accent-g1, #0F6E56);
+  --g2: var(--accent-g2, #1D9E75);
+  --g3: var(--accent-g3, #5DCAA5);
+  --g4: var(--accent-g4, #9FE1CB);
+  --g5: var(--accent-g5, #E1F5EE);
+
+  /* Scrollbar defaults */
+  --scroll-track: rgba(var(--accent-rgb), 0.04);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(255, 255, 255, 0.12);
+
+  /* Status Badge Tokens (Light/Default Mode) */
+  --status-ok-bg: var(--theme-status-ok-bg, #E1F5EE);
+  --status-ok-text: var(--theme-status-ok-text, #0F6E56);
+  --status-warn-bg: #FAEEDA;
+  --status-warn-text: #854F0B;
+  --status-low-bg: #FCEBEB;
+  --status-low-text: #A32D2D;
+  --status-oos-bg: #F0E6FB;
+  --status-oos-text: #6B21A8;
+  --status-proc-bg: #E6F1FB;
+  --status-proc-text: #185FA5;
+}
+
+/* Light theme explicit (for when [data-theme="light"] is set) */
+html[data-theme="light"] {
+  --bg: var(--theme-bg, #F0FDF4);
+  --panel-bg: #FFFFFF;
+  --border: var(--theme-border, #D1FAE5);
+  --text: var(--theme-text, #064E3B);
+  --muted: #64748B;
+  --sidebar-bg: var(--theme-sidebar-bg, #e1f5ee);
+  --sidebar-item-active-bg: var(--theme-sidebar-item-active-bg, #bae8d8);
+  --sidebar-text: #000000;
+  --sidebar-muted: rgba(0,0,0,0.65);
+  --content-bg: var(--theme-content-bg, #e9f1ee);
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --input-text: #0F172A;
+  --row-border: #F1F5F9;
+
+  /* Dashboard, Inventory, and Orders light-theme mappings */
+  --surface: #FFFFFF;
+  --white: #FFFFFF;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 4px 24px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.1), 0 1px 4px rgba(var(--accent-shadow-rgba, 15, 110, 86), 0.06);
+
+  --g5: var(--accent-g5, #E1F5EE);
+  --g4: var(--accent-g4, #9FE1CB);
+  --g3: var(--accent-g3, #5DCAA5);
+  --g2: var(--accent-g2, #1D9E75);
+  --g1: var(--accent-g1, #0F6E56);
+
+  --amber: #EF9F27;
+  --amber-pale: #FAEEDA;
+  --red: #E24B4A;
+  --red-pale: #FCEBEB;
+  --blue: #378ADD;
+  --blue-pale: #E6F1FB;
+  --pink: #D4537E;
+  --pink-pale: #FBEAF0;
+
+  --scroll-track: rgba(var(--accent-rgb), 0.04);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(255, 255, 255, 0.12);
+
+  /* Status Badge Tokens (Explicit Light Theme mapping) */
+  --status-ok-bg: var(--theme-status-ok-bg, #E1F5EE);
+  --status-ok-text: var(--theme-status-ok-text, #0F6E56);
+  --status-warn-bg: #FAEEDA;
+  --status-warn-text: #854F0B;
+  --status-low-bg: #FCEBEB;
+  --status-low-text: #A32D2D;
+  --status-oos-bg: #F0E6FB;
+  --status-oos-text: #6B21A8;
+  --status-proc-bg: #E6F1FB;
+  --status-proc-text: #185FA5;
+}
