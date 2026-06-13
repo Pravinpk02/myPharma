@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, ComposedChart, Area, Bar, XAxis, YAxis, LabelList, CartesianGrid } from 'recharts';
 import { Search, Bell, Calendar, X, ChevronLeft, ChevronRight, AlertTriangle, Package, ShoppingCart, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import styles from './Dashboard.module.css';
 import { useNavigate } from 'react-router-dom';
-import { useAppearance } from '../../context/AppearanceContext';
+
 import type {
   MetricData,
   InventoryItem,
@@ -19,6 +19,7 @@ import {
   getRecentOrders,
 } from '../../services/dashboardMockData';
 import { getNotifications, saveNotifications, type Notification } from '../../services/notificationsService';
+import { getOrdersApi } from '../../api/ordersApi';
 
 // ─── Search Data Types ─────────────────────────────────────────────────────────
 interface SearchResult {
@@ -80,86 +81,120 @@ const CALENDAR_EVENTS: CalEvent[] = [
 ];
 
 // ─── Bar Chart Component ───────────────────────────────────────────────────────
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div
+        style={{
+          background: 'var(--panel-bg, rgba(255, 255, 255, 0.85))',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid var(--border)',
+          padding: '10px 14px',
+          borderRadius: '12px',
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontSize: '11px',
+            color: 'var(--muted)',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}
+        >
+          {payload[0].payload.month}
+        </p>
+        <p
+          style={{
+            margin: '4px 0 0',
+            fontSize: '15px',
+            color: 'var(--text)',
+            fontWeight: 700,
+          }}
+        >
+          ₹{payload[0].value}L
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const BarChart = React.memo(({ data }: { data: ChartDataPoint[] }) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const { draft } = useAppearance();
-
-  const [isSystemDark, setIsSystemDark] = useState(
-    () => window.matchMedia('(prefers-color-scheme: dark)').matches
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <ComposedChart
+        data={data}
+        margin={{ top: 25, right: 5, left: -20, bottom: 5 }}
+      >
+        <defs>
+          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--accent, #1D9E75)" stopOpacity={0.16} />
+            <stop offset="100%" stopColor="var(--accent, #1D9E75)" stopOpacity={0.01} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" opacity={0.3} />
+        <XAxis
+          dataKey="month"
+          axisLine={false}
+          tickLine={false}
+          tick={{
+            fill: 'var(--muted)',
+            fontSize: '11px',
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+          }}
+          tickFormatter={(tick) => tick.slice(0, 3)}
+        />
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tick={{
+            fill: 'var(--muted)',
+            fontSize: '11px',
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+          }}
+          domain={[0, 120]}
+          ticks={[0, 25, 50, 100]}
+        />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+        <Area
+          type="linear"
+          dataKey="sales"
+          fill="url(#areaGradient)"
+          stroke="var(--accent, #1D9E75)"
+          strokeWidth={1.5}
+          strokeOpacity={0.4}
+          dot={false}
+          activeDot={false}
+        />
+        <Bar dataKey="sales" barSize={32}>
+          {data.map((_, index) => {
+            const cellOpacity = 1.0 - (index / data.length) * 0.7;
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill="var(--accent, #1D9E75)"
+                opacity={cellOpacity}
+              />
+            );
+          })}
+          <LabelList
+            dataKey="sales"
+            position="top"
+            formatter={(val: any) => `₹${val}L`}
+            style={{
+              fill: 'var(--text)',
+              fontSize: '12px',
+              fontFamily: 'Plus Jakarta Sans, sans-serif',
+              fontWeight: '600',
+            }}
+          />
+        </Bar>
+      </ComposedChart>
+    </ResponsiveContainer>
   );
-
-  useEffect(() => {
-    if (draft.theme !== 'system') return;
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => { setIsSystemDark(e.matches); };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, [draft.theme]);
-
-  const isDark = draft.theme === 'dark' || (draft.theme === 'system' && isSystemDark);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const width = canvas.width;
-    const height = canvas.height;
-    const maxValue = Math.max(...data.map((d) => d.sales));
-    const barWidth = width / (data.length * 1.5);
-    const barSpacing = width / data.length;
-
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, width, height);
-
-    const labelColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || (isDark ? '#34D399' : '#0D2D22');
-    const axisColor = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() || (isDark ? '#94A3B8' : '#5F7E74');
-    const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || (isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 110, 86, 0.07)');
-    const colorAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#1D9E75';
-    const colorG3 = getComputedStyle(document.documentElement).getPropertyValue('--g3').trim() || '#5DCAA5';
-    const colorG4 = getComputedStyle(document.documentElement).getPropertyValue('--g4').trim() || '#9FE1CB';
-
-    data.forEach((point, index) => {
-      const barHeight = (point.sales / maxValue) * (height * 0.8);
-      const x = index * barSpacing + barSpacing / 2 - barWidth / 2;
-      const y = height - barHeight - 20;
-
-      const gradient = ctx.createLinearGradient(x, y, x, height - 20);
-      if (index === data.length - 1) {
-        gradient.addColorStop(0, colorAccent);
-        gradient.addColorStop(1, colorG3);
-      } else {
-        gradient.addColorStop(0, colorG3);
-        gradient.addColorStop(1, colorG4);
-      }
-      ctx.fillStyle = gradient;
-      ctx.roundRect(x, y, barWidth, barHeight, [8, 8, 0, 0]);
-      ctx.fill();
-
-      ctx.fillStyle = axisColor;
-      ctx.font = '12px Plus Jakarta Sans';
-      ctx.textAlign = 'center';
-      ctx.fillText(point.month.slice(0, 3), x + barWidth / 2, height - 2);
-
-      ctx.fillStyle = labelColor;
-      ctx.font = 'bold 13px Plus Jakarta Sans';
-      ctx.textAlign = 'center';
-      ctx.fillText(`₹${point.sales}L`, x + barWidth / 2, y - 8);
-    });
-
-    ctx.strokeStyle = gridColor;
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 5; i++) {
-      const y = (height * 0.8 * i) / 5 + (height * 0.1);
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-  }, [data, isDark]);
-
-  return <canvas ref={canvasRef} width={700} height={250} style={{ width: '100%', height: '100%' }} />;
 });
 
 // ─── Doughnut Chart ────────────────────────────────────────────────────────────
@@ -600,15 +635,26 @@ const Dashboard: React.FC = () => {
   const unreadCount = notifs.filter(n => !n.read).length;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMetrics(getMetrics());
-      setSalesData(getSalesChartData());
-      setCategoryData(getCategoryData());
-      setInventory(getInventoryAlerts());
-      setOrders(getRecentOrders());
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    setMetrics(getMetrics());
+    setSalesData(getSalesChartData());
+    setCategoryData(getCategoryData());
+    setInventory(getInventoryAlerts());
+
+    getOrdersApi()
+      .then((data) => {
+        const recentOrdersMapped = data.slice(0, 6).map(o => ({
+          ...o,
+          orderNumber: o.orderNumber.startsWith('#') ? o.orderNumber : `#${o.orderNumber}`,
+          customer: o.customer.includes(o.city) ? o.customer : `${o.customer}, ${o.city}`
+        }));
+        setOrders(recentOrdersMapped);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load recent orders on dashboard', err);
+        setOrders(getRecentOrders());
+        setLoading(false);
+      });
   }, []);
 
   // Keyboard shortcut: Ctrl+K / Cmd+K to open search
@@ -702,7 +748,7 @@ const Dashboard: React.FC = () => {
               <div className={styles.cardAccent}></div>
               <div className={styles.cardHead}>
                 <span className={styles.cardTitle}>Monthly Sales Trend</span>
-                <span className={styles.cardPill}>Jan – May 2026</span>
+                <span className={styles.cardPill}>Jan – Oct 2026</span>
               </div>
               <div style={{ position: 'relative', width: '100%', height: '230px' }}>
                 <BarChart data={salesData} />

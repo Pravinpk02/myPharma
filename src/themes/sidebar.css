@@ -1,0 +1,4 @@
+/* Sidebar layout width tokens */
+html[data-sidebar="default"] { --sidebar-width: 255px; }
+html[data-sidebar="compact"]  { --sidebar-width: 180px; }
+html[data-sidebar="minimal"]  { --sidebar-width: 68px;  }

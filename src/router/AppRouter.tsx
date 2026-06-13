@@ -14,6 +14,7 @@ const Dashboard = lazy(() => import('../features/dashboard/Dashboard'));
 const Orders = lazy(() => import('../features/orders/Orders'));
 const Inventory = lazy(() => import('../features/inventory/Inventory'));
 const NewProductPage = lazy(() => import('../features/inventory/NewProductPage'));
+const BulkOrderUpdatePage = lazy(() => import('../features/inventory/BulkOrderUpdatePage'));
 const CustomersPage = lazy(() => import('../features/customers/CustomerComp'));
 const ReportsPage = lazy(() => import('../features/reports/Reports'));
 const NewReportPage = lazy(() => import('../features/reports/NewReportPage'));
@@ -73,6 +74,7 @@ export const AppRouter = () => {
                   <Route path="/orders" element={<Orders />} />
                   <Route path="/inventory" element={<Inventory />} />
                   <Route path="/inventory/new" element={<NewProductPage />} />
+                  <Route path="/inventory/bulk-update" element={<BulkOrderUpdatePage />} />
                   <Route path="/customers" element={<CustomersPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/reports/new" element={<NewReportPage />} />

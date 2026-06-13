@@ -2,8 +2,9 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Search, Bell, X } from 'lucide-react';
 import styles from './Orders.module.css';
 import type { OrderDetail } from '../../services/dashboardMockData';
-import { getAllOrders, paginateData } from '../../services/dashboardMockData';
+import { paginateData } from '../../services/dashboardMockData';
 import { Paginator } from '../../components/Paginator';
+import { getOrdersApi } from '../../api/ordersApi';
 
 const statusClasses: Record<string, string> = {
   delivered: styles.bOk,
@@ -176,14 +177,16 @@ const Orders: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      const allOrders = getAllOrders();
-      setOrders(allOrders);
-      setLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
+    setLoading(true);
+    getOrdersApi()
+      .then((data) => {
+        setOrders(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch orders from backend API', err);
+        setLoading(false);
+      });
   }, []);
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

@@ -160,6 +160,34 @@ export const CATEGORIES = [
   'Supplements',
 ];
 
+export interface BulkOrderRow {
+  rowIndex: number;
+  name: string;
+  category: string;
+  batch: string;
+  sku: string;
+  units: string;
+  unitPrice: string;
+  expiryDate: string;
+  supplier: string;
+  stock: string;
+  // Validation state
+  status: 'valid' | 'error' | 'processing' | 'done';
+  errors: Record<string, string>; // field -> error message
+}
+
+export interface BulkUploadResult {
+  totalRows: number;
+  successRows: number;
+  failedRows: number;
+  addedProducts: Array<{
+    name: string;
+    category: string;
+    units: number;
+    supplier: string;
+  }>;
+}
+
 export const stockColor = (pct: number) => {
   if (pct <= 20) return '#E24B4A';
   if (pct <= 40) return '#EF9F27';

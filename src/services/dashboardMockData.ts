@@ -99,11 +99,16 @@ export const getMetrics = (): MetricData[] => {
 
 export const getSalesChartData = (): ChartDataPoint[] => {
   return [
-    { month: 'January', sales: 52 },
-    { month: 'February', sales: 61 },
-    { month: 'March', sales: 58 },
-    { month: 'April', sales: 74 },
-    { month: 'May', sales: 84 },
+    { month: 'January', sales: 85 },
+    { month: 'February', sales: 38 },
+    { month: 'March', sales: 92 },
+    { month: 'April', sales: 45 },
+    { month: 'May', sales: 74 },
+    { month: 'June', sales: 35 },
+    { month: 'July', sales: 88 },
+    { month: 'August', sales: 52 },
+    { month: 'September', sales: 99 },
+    { month: 'October', sales: 42 },
   ];
 };
 

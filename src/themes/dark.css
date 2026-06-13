@@ -1,0 +1,57 @@
+/* Dark theme — html prefix raises specificity to beat :root */
+html[data-theme="dark"] {
+  --bg: #0F172A;
+  --panel-bg: #1E293B;
+  --border: #334155;
+  --text: #E2E8F0;
+  --muted: #94A3B8;
+  --sidebar-bg: #1E293B;
+  --sidebar-item-active-bg: rgba(var(--accent-rgb), 0.15);
+  --sidebar-text: #E2E8F0;
+  --sidebar-muted: rgba(226,232,240,0.65);
+  --content-bg: #0F172A;
+  --card-bg: #1E293B;
+  --input-bg: #0F172A;
+  --input-border: #334155;
+  --input-text: #E2E8F0;
+  --row-border: #334155;
+
+  /* Dashboard, Inventory, and Orders dark-theme mappings */
+  --surface: #1E293B;
+  --white: #1E293B;
+  --glass: rgba(30, 41, 59, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.2);
+
+  --g5: rgba(var(--accent-rgb), 0.12);
+  --g4: rgba(var(--accent-rgb), 0.25);
+  --g3: rgba(var(--accent-rgb), 0.40);
+  --g2: var(--accent);
+  --g1: var(--accent-dark);
+
+  --amber: #F59E0B;
+  --amber-pale: rgba(245, 158, 11, 0.12);
+  --red: #EF4444;
+  --red-pale: rgba(239, 68, 68, 0.12);
+  --blue: #3B82F6;
+  --blue-pale: rgba(59, 130, 246, 0.12);
+  --pink: #EC4899;
+  --pink-pale: rgba(236, 72, 153, 0.12);
+
+  --scroll-track: rgba(255, 255, 255, 0.05);
+  --scroll-thumb-start: var(--g4);
+  --scroll-thumb-end: var(--g3);
+  --scroll-thumb-border: rgba(30, 41, 59, 0.3);
+
+  /* Status Badge Tokens (Bright/Neon Colors in Dark Mode) */
+  --status-ok-bg: rgba(16, 185, 129, 0.16);
+  --status-ok-text: #34D399;
+  --status-warn-bg: rgba(245, 158, 11, 0.16);
+  --status-warn-text: #FBBF24;
+  --status-low-bg: rgba(239, 68, 68, 0.16);
+  --status-low-text: #F87171;
+  --status-oos-bg: rgba(168, 85, 247, 0.16);
+  --status-oos-text: #C084FC;
+  --status-proc-bg: rgba(59, 130, 246, 0.16);
+  --status-proc-text: #60A5FA;
+}

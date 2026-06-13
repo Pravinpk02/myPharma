@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, AlertTriangle, X, Search, Filter, Calendar, Download, Plus, DollarSign, Check, ChevronDown } from 'lucide-react';
+import { Bell, AlertTriangle, X, Search, Filter, Calendar, Download, Plus, DollarSign, Check, ChevronDown, FileSpreadsheet } from 'lucide-react';
 import styles from './Inventory.module.css';
 
 import { useInventory } from './hooks/useInventory';
@@ -81,6 +81,10 @@ const Inventory: React.FC = () => {
 
   const handleAddProduct = () => {
     navigate('/inventory/new');
+  };
+
+  const handleBulkCSVUpdate = () => {
+    navigate('/inventory/bulk-update');
   };
 
   return (
@@ -248,6 +252,10 @@ const Inventory: React.FC = () => {
                   <Download size={13} />
                   Export
                 </button>
+                <button className={styles.filterBtn} onClick={handleBulkCSVUpdate} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <FileSpreadsheet size={13} />
+                  Bulk CSV Update
+                </button>
                 <button className={styles.addBtn} onClick={handleAddProduct}>
                   <Plus size={14} />
                   Add Product
@@ -363,6 +371,14 @@ const Inventory: React.FC = () => {
             setSelectedProducts(new Set());
           }}>
             📦 Bulk Reorder
+          </button>
+          <button
+            className={`${styles.bulkBtn} ${styles.bulkBtnPrimary}`}
+            style={{ background: 'rgba(29, 158, 117, 0.12)', color: 'var(--accent)', border: '1px solid rgba(29, 158, 117, 0.25)' }}
+            onClick={() => navigate('/inventory/bulk-update')}
+          >
+            <FileSpreadsheet size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />
+            Bulk CSV Reorder
           </button>
           <button className={styles.bulkBtn} onClick={() => {
             const consent = window.confirm(`Do you want to export ${selectedProducts.size} selected products to a CSV file?`);

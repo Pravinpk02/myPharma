@@ -234,7 +234,7 @@
   align-items: center;
   padding: 8px 12px;
   border-radius: 14px;
-  background: rgba(151, 239, 211, 0.201);
+  background: rgba(var(--accent-rgb, 16,185,129), 0.12);
   position: sticky;
   bottom: 10px;
   z-index: 5;

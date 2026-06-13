@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Package } from 'lucide-react';
-import { addInventoryProduct } from '../../services/inventoryService';
+import { ArrowLeft, CheckCircle, Package, FileSpreadsheet, ChevronRight } from 'lucide-react';
+import { addInventoryProductApi } from '../../api/inventoryApi';
 import styles from './NewProductPage.module.css';
 
 const CATEGORY_OPTIONS = [
@@ -37,12 +37,7 @@ export const NewProductPage: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Format Expiry Label (e.g. "2027-04-12" -> "Apr 2027")
-  const formatExpiryLabel = useCallback((dateStr: string): string => {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-  }, []);
+
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -65,8 +60,8 @@ export const NewProductPage: React.FC = () => {
       return;
     }
 
-    // Call service to write to mock database
-    addInventoryProduct({
+    // Call API to write to database
+    addInventoryProductApi({
       name: name.trim(),
       category,
       batch: batch.trim().toUpperCase(),
@@ -74,16 +69,20 @@ export const NewProductPage: React.FC = () => {
       stock: stockNum,
       units: unitsNum,
       unitPriceNum: priceNum,
-      expiry: formatExpiryLabel(expiryDateStr),
-      expiryDate: new Date(expiryDateStr),
+      expiryDate: expiryDateStr,
       supplier,
-    });
-
-    setSuccess(true);
-    setTimeout(() => {
-      navigate('/inventory');
-    }, 1200);
-  }, [name, category, batch, sku, stock, units, unitPrice, expiryDateStr, supplier, formatExpiryLabel, navigate]);
+    })
+      .then(() => {
+        setSuccess(true);
+        setTimeout(() => {
+          navigate('/inventory');
+        }, 1200);
+      })
+      .catch((err) => {
+        console.error('Failed to add product:', err);
+        setErrors({ submit: err.response?.data?.message || 'Failed to save product. Please try again.' });
+      });
+  }, [name, category, batch, sku, stock, units, unitPrice, expiryDateStr, supplier, navigate]);
 
   return (
     <div className={styles.shell}>
@@ -113,6 +112,40 @@ export const NewProductPage: React.FC = () => {
 
         {/* Form Container */}
         <main className={styles.formContainer}>
+
+          {/* Bulk Upload Banner */}
+          <div
+            onClick={() => navigate('/inventory/bulk-update')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+              padding: '14px 18px',
+              marginBottom: '16px',
+              background: 'rgba(29, 158, 117, 0.06)',
+              border: '1px solid rgba(29, 158, 117, 0.2)',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(29, 158, 117, 0.11)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(29, 158, 117, 0.06)')}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <FileSpreadsheet size={20} color="var(--accent)" />
+              <div>
+                <div style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--text)' }}>
+                  Need to add multiple products?
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '2px' }}>
+                  Use Bulk CSV Order Update to upload and process many orders at once
+                </div>
+              </div>
+            </div>
+            <ChevronRight size={18} color="var(--accent)" />
+          </div>
+
           <form className={styles.formCard} onSubmit={handleSubmit}>
             <div className={styles.cardHeader}>
               <Package size={20} className={styles.headerIcon} />
