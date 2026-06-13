@@ -631,7 +631,7 @@ const AnalyticsPage: React.FC = () => {
                     tick={{ fontSize: 10, fill: '#A8C0B8' }}
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(v) => `₹${(v / 100000).toFixed(0)}L`}
+                    tickFormatter={(v: number) => `₹${(v / 100000).toFixed(0)}L`}
                     width={52}
                   />
                   <YAxis
@@ -742,7 +742,7 @@ const AnalyticsPage: React.FC = () => {
                     tick={{ fontSize: 10, fill: '#A8C0B8' }}
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(v) => `₹${v / 1000}K`}
+                    tickFormatter={(v: number) => `₹${v / 1000}K`}
                     width={48}
                   />
                   <YAxis

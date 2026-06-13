@@ -145,7 +145,7 @@ const BarChart = React.memo(({ data }: { data: ChartDataPoint[] }) => {
             fontSize: '11px',
             fontFamily: 'Plus Jakarta Sans, sans-serif',
           }}
-          tickFormatter={(tick) => tick.slice(0, 3)}
+          tickFormatter={(tick: string) => tick.slice(0, 3)}
         />
         <YAxis
           axisLine={false}
@@ -206,7 +206,7 @@ const DoughnutChart = React.memo(({ data }: { data: CategoryData[] }) => (
       <Pie data={data} cx="50%" cy="50%" innerRadius={42} outerRadius={70} dataKey="percentage" nameKey="name">
         {data.map((_, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
       </Pie>
-      <Tooltip formatter={(value) => `${value}%`} />
+      <Tooltip formatter={(value: number) => `${value}%`} />
     </PieChart>
   </ResponsiveContainer>
 ));
