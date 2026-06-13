@@ -3,9 +3,8 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-  DragEvent,
-  ChangeEvent,
 } from 'react';
+import type { DragEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
